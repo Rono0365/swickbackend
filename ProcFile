@@ -1,1 +1,2 @@
-web: gunicorn chosen2.wsgi --log-file -
+web gunicorn comdata2.wsgi:application --log-file -
+
