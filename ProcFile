@@ -1,2 +1,2 @@
-web gunicorn comdata2.wsgi:application --log-file -
+web gunicorn menknew.wsgi:application --log-file -
 
