@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 
+class userSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username']
+
 class foodSerializer(serializers.ModelSerializer):
     class Meta:
         model = food
@@ -37,16 +42,21 @@ class orderSerializer(serializers.ModelSerializer):
     #food = foodSerializer(many=True)
     #table = serializers.ReadOnlyField(source='table.name')
     #add table nameUnsupported Media Type: /order2/
+    #username = serializers.ReadOnlyField(source='owner.username')#owner.username
+    #lastname = serializers.ReadOnlyField(source='owner.last_name')
     
     class Meta:
         model = order2
-        fields = ['table','food','restaurantx','time']#,'customer' 
+        fields = ['table','food','owner','restaurantx','time','totalprice','ordertype']#,'customer' 
 class restaurantSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField(source='username.username')
+    
     menu = menuSerializer(many=True)
     orders = orderSerializer(many=True)
+    #'namer'
     class Meta:
         model =  restaurant
-        fields = ['name','location','city','orders','menu']                
+        fields = ['location','city','orders','menu','username']                
 
 class orderxSerializer(serializers.ModelSerializer):
     #food = foodSerializer(many=True)

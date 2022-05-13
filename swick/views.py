@@ -46,6 +46,10 @@ class tableDetail(generics.RetrieveUpdateDestroyAPIView):
     #lookup_field = 'pk'
     queryset = table.objects.all()
     serializer_class = tableSerializer
+class userDetail(generics.RetrieveUpdateDestroyAPIView):
+    #lookup_field = 'pk'
+    queryset = User.objects.all()
+    serializer_class = userSerializer
     
     #filter_fields = ('name')
     # inside OrganisationDetail
@@ -57,6 +61,25 @@ class tableDetail(generics.RetrieveUpdateDestroyAPIView):
         obj = queryset.get(pk=self.request.user.table_id)
         self.check_object_permissions(self.request, obj)
         return obj
+        # delete view for details
+def delete_view(request, id):
+    # dictionary for initial data with
+    # field names as keys
+    context ={}
+ 
+    # fetch the object related to passed id
+    obj = get_object_or_404(GeeksModel, id = id)
+ 
+ 
+    if request.method =="POST":
+        # delete object
+        obj.delete()
+        # after deleting redirect to
+        # home page
+        return HttpResponseRedirect("/")
+ 
+    return render(request, "delete_view.html", context)
+
     '''
 class orderDetail(generics.ListCreateAPIView):
     #lookup_field = 'pk'
@@ -74,6 +97,12 @@ class orderxDetail(generics.ListCreateAPIView):
     serializer_class = orderxSerializer
     def perform_create(self, serializer):
         serializer.save() 
+    def update(self,request, serializer,*args,**kwargs):
+        instance = self.get_object()
+        instance.sender = self.get_user()
+        serializer = self.get_serializer(instance,data = request.data)
+        self.perform_update(serializer)
+        return Response(serializer.data)    
       
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()

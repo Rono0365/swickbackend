@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 
 class food(models.Model):
     name = models.CharField(max_length=100,default='')
@@ -29,11 +30,13 @@ class table(models.Model):
     '''
 class restaurant(models.Model):
     #menu = models.ManyToManyField(food)
-    name = models.CharField(max_length=100,default='')
+    username =  models.ForeignKey(User, on_delete=models.CASCADE, default='')
     location = models.CharField(max_length=100,default='')
     city = models.CharField(max_length=100,default='')
     orders = models.ManyToManyField('order2')
     menu = models.ManyToManyField(Menu)
+    #ownert = models.ForeignKey('auth.User', on_delete=models.CASCADE, default='')
+    
 class order(models.Model):
     #name = models.CharField(max_length=100,default='')
     #table = models.ForeignKey(table,on_delete=models.CASCADE)
@@ -41,10 +44,12 @@ class order(models.Model):
 class order2(models.Model):
     #name = models.CharField(max_length=100,default='')
     table = models.CharField(max_length=100,default='')
+    owner = models.CharField(max_length=10000,default='')
     food =  models.CharField(max_length=10000,default='')
     restaurantx  =  models.CharField(max_length=100,default='')
     time = models.CharField(max_length=100,default='')
-    #customer = models.CharField(max_length=100,default='')
+    totalprice = models.CharField(max_length=100,default='')
+    ordertype = models.CharField(max_length=100,default='')
 class Vcart(models.Model):
     #name = models.CharField(max_length=100,default='')
     count = models.CharField(max_length=100,default='1')

@@ -9,8 +9,9 @@ urlpatterns = [
     path('restaurant/<int:pk>/', restaurantDetail.as_view()),
     
     path('api-token-auth/', CustomAuthToken.as_view()),
-    
-    path('tables/', tableList.as_view()),
+    path('me/<int:pk>/', userDetail.as_view()),
+
+    #path('tables/', tableList.as_view()),
     #path('table/<int:year>/<slug:slug>/', tableDetail.as_view()),
     path('table/<int:pk>/', tableDetail.as_view()),
     #name='article_detail'),
