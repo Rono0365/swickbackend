@@ -81,14 +81,7 @@ def delete_view(request, id):
     return render(request, "delete_view.html", context)
 
     '''
-class orderDetail(generics.ListCreateAPIView):
-    #lookup_field = 'pk'
-    queryset = order2.objects.all()
-    #permission_classes = (AllowAny,)
-   
-    serializer_class = orderSerializer
-    def perform_create(self, serializer):
-        serializer.save() 
+       
 class orderxDetail(generics.ListCreateAPIView):
     #lookup_field = 'pk'
     queryset = order.objects.all()
@@ -116,4 +109,82 @@ class restaurantDetail(generics.RetrieveUpdateDestroyAPIView):
     #lookup_field = 'pk'
     queryset = restaurant.objects.all()
     serializer_class = restaurantSerializer
+class restaurantList(generics.ListCreateAPIView):
+    queryset = restaurant.objects.all()
+    serializer_class = restaurantSerializer
 
+    def perform_create(self, serializer):
+        serializer.save()
+class UpdateOrderView(generics.RetrieveUpdateDestroyAPIView,generics.UpdateAPIView):
+    queryset = order2.objects.all()
+    serializer_class = orderSerializer
+    lookup_field = 'pk'
+    permission_classes = (AllowAny,)
+    
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()#model
+        serializer = self.get_serializer(instance, data=request.data)
+        #print(serializer)
+        
+
+        if serializer.is_valid():
+            #serializer1 = order2.objects.filter(pk=instance.pk).update(ordertrak='ready')
+            #print(instance.ordertrak)
+            #Survey.objects.filter(pk=survey.pk).update(active=True)
+            #print(record)
+            instance.save()
+            serializer.save()
+            
+            return Response(serializer.data)
+        
+        else:
+            print('not valid serilizer')
+            return Response(serializer.data)
+class orderDetail(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView,generics.UpdateAPIView):
+    lookup_field = 'pk'
+    queryset = order2.objects.all()
+    permission_classes = (AllowAny,)
+    
+    print(queryset)
+    serializer_class = orderSerializer
+    
+    def perform_create(self, serializer):
+        #self.id   
+        serializer.save() 
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()#model
+        serializer = self.get_serializer(instance, data=request.data)
+        #print(serializer)
+        
+
+        if serializer.is_valid():
+            #serializer1 = order2.objects.filter(pk=instance.pk).update(ordertrak='ready')
+            #print(instance.ordertrak)
+            #Survey.objects.filter(pk=survey.pk).update(active=True)
+            #print(record)
+            instance.save()
+            serializer.save()
+            
+            return Response(serializer.data)
+        
+        else:
+            print('not valid serilizer')
+            return Response(serializer.data)
+        
+        """'table': i['table'],
+                                                        'food': i[
+                                                            'food'], //list for food
+                                                        'restaurantx':
+                                                            i['restaurantx'],
+                                                        'time': i['time'],
+                                                        'owner': i['owner'],
+                                                        //$sum
+                                                        'totalprice':
+                                                            i['totalprice'],
+                                                        'ordertype':
+                                                            i['ordertype'],
+                                                        'ordername':
+                                                            i['ordername'],
+                                                        'ordertrak': 'ready',
+                                                        'ordertime':
+                                                            i['ordertime'],"""

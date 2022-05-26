@@ -40,14 +40,16 @@ class tableSerializer(serializers.ModelSerializer):
 
 class orderSerializer(serializers.ModelSerializer):
     #food = foodSerializer(many=True)
-    #table = serializers.ReadOnlyField(source='table.name')
+    #table = serializers.ReadOnlyField(source='order2.id')
     #add table nameUnsupported Media Type: /order2/
     #username = serializers.ReadOnlyField(source='owner.username')#owner.username
     #lastname = serializers.ReadOnlyField(source='owner.last_name')
+    #orderxx = serializers.PrimaryKeyRelatedField(queryset=order2.objects.all())
+    orderxx = serializers.ReadOnlyField(source='order2.id')
     
     class Meta:
         model = order2
-        fields = ['table','food','owner','restaurantx','time','totalprice','ordertype']#,'customer' 
+        fields = ['orderxx','table','food','owner','restaurantx','time','totalprice','ordertype','ordername','ordertrak','ordertime']#,'customer' 
 class restaurantSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField(source='username.username')
     
@@ -56,7 +58,7 @@ class restaurantSerializer(serializers.ModelSerializer):
     #'namer'
     class Meta:
         model =  restaurant
-        fields = ['location','city','orders','menu','username']                
+        fields = ['location','city','orders','menu','username','image_of_restaurant']                
 
 class orderxSerializer(serializers.ModelSerializer):
     #food = foodSerializer(many=True)
